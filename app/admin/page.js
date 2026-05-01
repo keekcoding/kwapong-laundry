@@ -135,9 +135,20 @@ export default function AdminPage() {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 13, fontWeight: 600, color: '#e5e7eb', fontFamily: 'monospace' }}>{o.id} <span style={{ fontFamily: 'sans-serif', fontWeight: 400, color: '#9ca3af' }}>— {o.name}</span></div>
                   <div style={{ fontSize: 11, color: '#4b5563', marginTop: 2, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-                    <span>Room {o.room}</span>
-                    <LogisticsTag o={o} />
-                  </div>
+  <span>Room {o.room}</span>
+  <LogisticsTag o={o} />
+  {(o.status === 'Ready' || o.status === 'Out for delivery') && (
+    <button onClick={() => {
+      const msg = o.returnMode === 'deliver'
+        ? `Hi ${o.name}! 👋\n\nYour laundry (*${o.id}*) is on its way to Room ${o.room}! 🚚\n\nThank you for using Kwapong Laundry. 🧺`
+        : `Hi ${o.name}! 👋\n\nYour laundry (*${o.id}*) is ready for pickup! 🧺\n\nPlease come collect it at your earliest convenience.\n\nThank you for using Kwapong Laundry!`;
+      window.open(`https://wa.me/233${o.phone.replace(/^0/, '')}?text=${encodeURIComponent(msg)}`, '_blank');
+    }}
+      style={{ fontSize: 10, background: '#0d2e1a', color: '#25d366', border: '1px solid #25d36633', borderRadius: 6, padding: '3px 8px', cursor: 'pointer', fontWeight: 600 }}>
+      📲 Notify
+    </button>
+  )}
+</div>
                 </div>
                 <select style={{ fontSize: 11, background: '#1a1a1a', color: '#e5e7eb', border: '1px solid #2a2a2a', borderRadius: 8, padding: '5px 8px', cursor: 'pointer' }}
                   value={o.status} onChange={e => updateStatus(o.id, e.target.value)}>

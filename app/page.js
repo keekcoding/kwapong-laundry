@@ -234,6 +234,9 @@ export default function Home() {
     if (error) { console.error(JSON.stringify(error)); showToast('Error loading orders'); }
 
     showToast(`Booked! Your ID is ${newOrder.id}`);
+const msg = `Hi Kwapong Laundry! 👋\n\nI just made a booking.\n\n*Order ID:* ${newOrder.id}\n*Name:* ${newOrder.name}\n*Room:* ${newOrder.room}\n*Date:* ${newOrder.date}\n*Items:* ${newOrder.items.join(', ')}\n\nPlease confirm my booking. 🧺`;
+const waLink = `https://wa.me/233204912848?text=${encodeURIComponent(msg)}`;
+setTimeout(() => { window.location.href = waLink; }, 500);
     setForm({ name: '', phone: '', room: '', date: '', notes: '' });
     setSelectedItems([]); setDropoff('self'); setReturnMode('collect'); setPickupTime(''); setDeliveryTime('');
     fetchOrders();
@@ -276,7 +279,7 @@ export default function Home() {
             <SectionLabel>New Booking</SectionLabel>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <Input label="Full name" placeholder="Ama Mensah" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
-              <Input label="Phone / WhatsApp" placeholder="024 000 0000" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
+              <Input label="WhatsApp Number" placeholder="024 000 0000" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
               <Input label="Room number" placeholder="A12" value={form.room} onChange={e => setForm({ ...form, room: e.target.value })} />
               <Input label="Preferred date" type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} />
             </div>

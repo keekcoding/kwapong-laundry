@@ -67,7 +67,7 @@ function OrderCard({ order, showSelect, onStatusChange }) {
             <span style={{ fontFamily: 'monospace', fontSize: 13, fontWeight: 700, color: '#e5e7eb', letterSpacing: '0.05em' }}>{order.id}</span>
             <LogisticsTag o={order} />
           </div>
-          <div style={{ fontSize: 12, color: '#6b7280', marginTop: 3 }}>{order.name} · Room {order.room} · {order.date}</div>
+          <div style={{ fontSize: 12, color: '#6b7280', marginTop: 3 }}>{order.name} · Location {order.Location} · {order.date}</div>
         </div>
         {showSelect ? (
           <select style={{ fontSize: 11, background: '#1a1a1a', color: '#e5e7eb', border: '1px solid #333', borderRadius: 8, padding: '4px 8px', cursor: 'pointer' }}
@@ -181,7 +181,7 @@ export default function Home() {
   const [trackError, setTrackError] = useState('');
   const [adminUnlocked, setAdminUnlocked] = useState(false);
 
-  const [form, setForm] = useState({ name: '', phone: '', room: '', date: '', notes: '' });
+  const [form, setForm] = useState({ name: '', phone: '', Location: '', date: '', notes: '' });
   const [selectedItems, setSelectedItems] = useState([]);
   const [dropoff, setDropoff] = useState('self');
   const [returnMode, setReturnMode] = useState('collect');
@@ -211,7 +211,7 @@ export default function Home() {
   }
 
   async function submitBooking() {
-    if (!form.name || !form.phone || !form.room || !form.date || !selectedItems.length) { showToast('Please fill all required fields'); return; }
+    if (!form.name || !form.phone || !form.Location || !form.date || !selectedItems.length) { showToast('Please fill all required fields'); return; }
     if (dropoff === 'pickup' && !pickupTime) { showToast('Select a pickup time slot'); return; }
     if (returnMode === 'deliver' && !deliveryTime) { showToast('Select a delivery time slot'); return; }
 
@@ -219,7 +219,7 @@ export default function Home() {
       id: genId(),
       name: form.name,
       phone: form.phone,
-      room: form.room,
+      Location: form.Location,
       date: form.date,
       notes: form.notes,
       items: selectedItems,
@@ -233,11 +233,11 @@ export default function Home() {
     const { error } = await supabase.from('orders').insert([newOrder]);
     if (error) { console.error(JSON.stringify(error)); showToast('Error loading orders'); }
 
-    showToast(`Booked! Your ID is ${newOrder.id}`);
-const msg = `Hi Kwapong Laundry! 👋\n\nI just made a booking.\n\n*Order ID:* ${newOrder.id}\n*Name:* ${newOrder.name}\n*Room:* ${newOrder.room}\n*Date:* ${newOrder.date}\n*Items:* ${newOrder.items.join(', ')}\n\nPlease confirm my booking. 🧺`;
+    showToast(`Booked! Your ID is ${newOrder.id} - Redirecting to WhatsApp, Please wait...`);
+const msg = `Hi Dorin's Home and cleaning services! 👋\n\nI just made a booking.\n\n*Order ID:* ${newOrder.id}\n*Name:* ${newOrder.name}\n*Location:* ${newOrder.Location}\n*Date:* ${newOrder.date}\n*Items:* ${newOrder.items.join(', ')}\n\nPlease confirm my booking. 🧺`;
 const waLink = `https://wa.me/233204912848?text=${encodeURIComponent(msg)}`;
 setTimeout(() => { window.location.href = waLink; }, 500);
-    setForm({ name: '', phone: '', room: '', date: '', notes: '' });
+    setForm({ name: '', phone: '', Location: '', date: '', notes: '' });
     setSelectedItems([]); setDropoff('self'); setReturnMode('collect'); setPickupTime(''); setDeliveryTime('');
     fetchOrders();
   }
@@ -258,7 +258,7 @@ setTimeout(() => { window.location.href = waLink; }, 500);
       <div style={{ background: '#0a0a0a', borderBottom: '1px solid #1a1a1a', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12, position: 'sticky', top: 0, zIndex: 10 }}>
         <div style={{ width: 38, height: 38, borderRadius: 10, background: 'linear-gradient(135deg, #10b981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>🧺</div>
         <div>
-          <div style={{ fontWeight: 700, fontSize: 15, color: '#f3f4f6' }}>Kwapong Laundry</div>
+          <div style={{ fontWeight: 700, fontSize: 15, color: '#f3f4f6' }}>Dorin's Laundry Home and cleaning services</div>
           <div style={{ fontSize: 11, color: '#4b5563' }}>University of Ghana</div>
         </div>
       </div>
@@ -280,7 +280,7 @@ setTimeout(() => { window.location.href = waLink; }, 500);
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <Input label="Full name" placeholder="Ama Mensah" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
               <Input label="WhatsApp Number" placeholder="024 000 0000" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
-              <Input label="Room number" placeholder="A12" value={form.room} onChange={e => setForm({ ...form, room: e.target.value })} />
+              <Input label="Location" placeholder="Madina Firestone" value={form.Location} onChange={e => setForm({ ...form, Location: e.target.value })} />
               <Input label="Preferred date" type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} />
             </div>
 
@@ -301,7 +301,7 @@ setTimeout(() => { window.location.href = waLink; }, 500);
             <Divider />
             <SectionLabel>Return logistics</SectionLabel>
             <p style={{ fontSize: 12, color: '#6b7280', marginBottom: 6 }}>How do you want your clean laundry back?</p>
-            <Toggle options={[['collect', "I'll collect it"], ['deliver', 'Deliver to my room']]} value={returnMode} onChange={setReturnMode} />
+            <Toggle options={[['collect', "I'll collect it"], ['deliver', 'Deliver to my Location']]} value={returnMode} onChange={setReturnMode} />
             {returnMode === 'deliver' && (
               <div style={{ background: '#0a0a0a', border: '1px solid #1e1e1e', borderRadius: 10, padding: 12, marginTop: 10 }}>
                 <Select label="Delivery time preference" value={deliveryTime} onChange={e => setDeliveryTime(e.target.value)}>
@@ -398,7 +398,7 @@ setTimeout(() => { window.location.href = waLink; }, 500);
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontSize: 13, fontWeight: 600, color: '#e5e7eb', fontFamily: 'monospace' }}>{o.id} <span style={{ fontFamily: 'sans-serif', fontWeight: 400, color: '#9ca3af' }}>— {o.name}</span></div>
                         <div style={{ fontSize: 11, color: '#4b5563', marginTop: 2, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-                          <span>Room {o.room}</span>
+                          <span>Location {o.Location}</span>
                           <LogisticsTag o={o} />
                         </div>
                       </div>

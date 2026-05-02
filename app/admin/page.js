@@ -93,7 +93,7 @@ export default function AdminPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ width: 38, height: 38, borderRadius: 10, background: 'linear-gradient(135deg, #10b981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>🧺</div>
           <div>
-            <div style={{ fontWeight: 700, fontSize: 15, color: '#f3f4f6' }}>Kwapong Laundry</div>
+            <div style={{ fontWeight: 700, fontSize: 15, color: '#f3f4f6' }}>Dorin's Home and cleaning services</div>
             <div style={{ fontSize: 11, color: '#4b5563' }}>Admin Dashboard</div>
           </div>
         </div>
@@ -135,12 +135,12 @@ export default function AdminPage() {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 13, fontWeight: 600, color: '#e5e7eb', fontFamily: 'monospace' }}>{o.id} <span style={{ fontFamily: 'sans-serif', fontWeight: 400, color: '#9ca3af' }}>— {o.name}</span></div>
                   <div style={{ fontSize: 11, color: '#4b5563', marginTop: 2, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-  <span>Room {o.room}</span>
+  <span>Location {o.Location}</span>
   <LogisticsTag o={o} />
   {(o.status === 'Ready' || o.status === 'Out for delivery') && (
     <button onClick={() => {
       const msg = o.returnMode === 'deliver'
-        ? `Hi ${o.name}! 👋\n\nYour laundry (*${o.id}*) is on its way to Room ${o.room}! 🚚\n\nThank you for using Kwapong Laundry. 🧺`
+        ? `Hi ${o.name}! 👋\n\nYour laundry (*${o.id}*) is on its way to Location ${o.Location}! 🚚\n\nThank you for using Kwapong Laundry. 🧺`
         : `Hi ${o.name}! 👋\n\nYour laundry (*${o.id}*) is ready for pickup! 🧺\n\nPlease come collect it at your earliest convenience.\n\nThank you for using Kwapong Laundry!`;
       window.open(`https://wa.me/233${o.phone.replace(/^0/, '')}?text=${encodeURIComponent(msg)}`, '_blank');
     }}

@@ -219,7 +219,7 @@ export default function Home() {
       id: genId(),
       name: form.name,
       phone: form.phone,
-      Location: form.Location,
+      room: form.Location,
       date: form.date,
       notes: form.notes,
       items: selectedItems,
@@ -234,7 +234,7 @@ export default function Home() {
     if (error) { console.error(JSON.stringify(error)); showToast('Error loading orders'); }
 
     showToast(`Booked! Your ID is ${newOrder.id} - Redirecting to WhatsApp, Please wait...`);
-const msg = `Hi Dorin's Home and cleaning services! 👋\n\nI just made a booking.\n\n*Order ID:* ${newOrder.id}\n*Name:* ${newOrder.name}\n*Location:* ${newOrder.Location}\n*Date:* ${newOrder.date}\n*Items:* ${newOrder.items.join(', ')}\n\nPlease confirm my booking. 🧺`;
+const msg = `Hi Dorin'sLaundry Home and cleaning services! 👋\n\nI just made a booking.\n\n*Order ID:* ${newOrder.id}\n*Name:* ${newOrder.name}\n*Location:* ${newOrder.Location}\n*Date:* ${newOrder.date}\n*Items:* ${newOrder.items.join(', ')}\n\nPlease confirm my booking. 🧺`;
 const waLink = `https://wa.me/233204912848?text=${encodeURIComponent(msg)}`;
 setTimeout(() => { window.location.href = waLink; }, 500);
     setForm({ name: '', phone: '', Location: '', date: '', notes: '' });
